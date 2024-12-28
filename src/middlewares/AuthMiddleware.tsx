@@ -1,3 +1,9 @@
+import { Navigate, Outlet } from "react-router-dom";
+
 export default function AuthMiddleware() {
-  return <div>AuthMiddleware</div>;
+  const isAuth = true;
+  if (!isAuth) {
+    return <Navigate to={"/auth/login"} />;
+  }
+  return <Outlet />;
 }
