@@ -1,17 +1,22 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { client } from "@/utils/client";
+import { saveLocalRefreshToken, saveLocalToken } from "@/utils/auth";
+import { updateAuthStatus } from "@/stores/slices/authSlice";
 
 export default function Login() {
   const { toast } = useToast();
   const [isLoading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -20,21 +25,26 @@ export default function Login() {
   } = useForm({
     mode: "onChange",
   });
-  const onSubmit = async ({
-    username: email,
-    password,
-  }: {
-    username: string;
-    password: string;
-  }) => {
-    const data = await client.post("/auth/login", {
-      email,
-      password,
-    });
-    console.log(data);
-    // toast({
-    //   title: "Login Success",
-    // });
+  const onSubmit = async (formData: unknown) => {
+    const { username: email, password } = formData as {
+      username: string;
+      password: string;
+    };
+
+    try {
+      const { data } = await client.post("/auth/login", {
+        email,
+        password,
+      });
+      saveLocalToken(data.access_token);
+      saveLocalRefreshToken(data.refresh_token);
+      dispatch(updateAuthStatus(true));
+      navigate("/");
+    } catch {
+      toast({
+        title: "Username or password is incorrect",
+      });
+    }
   };
   useEffect(() => {
     trigger(["username", "password"], {
