@@ -7,6 +7,7 @@ import { FaGoogle } from "react-icons/fa";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { client } from "@/utils/client";
 
 export default function Login() {
   const { toast } = useToast();
@@ -19,11 +20,21 @@ export default function Login() {
   } = useForm({
     mode: "onChange",
   });
-  const onSubmit = (data) => {
-    console.log(data);
-    toast({
-      title: "Login Success",
+  const onSubmit = async ({
+    username: email,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) => {
+    const data = await client.post("/auth/login", {
+      email,
+      password,
     });
+    console.log(data);
+    // toast({
+    //   title: "Login Success",
+    // });
   };
   useEffect(() => {
     trigger(["username", "password"], {
