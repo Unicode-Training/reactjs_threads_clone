@@ -7,16 +7,16 @@ import { FaGoogle } from "react-icons/fa";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { client } from "@/utils/client";
 import { saveLocalRefreshToken, saveLocalToken } from "@/utils/auth";
-import { updateAuthStatus } from "@/stores/slices/authSlice";
+// import { updateAuthStatus } from "@/stores/slices/authSlice";
 
 export default function Login() {
   const { toast } = useToast();
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -38,7 +38,7 @@ export default function Login() {
       });
       saveLocalToken(data.access_token);
       saveLocalRefreshToken(data.refresh_token);
-      dispatch(updateAuthStatus(true));
+      // dispatch(updateAuthStatus(true));
       navigate("/");
     } catch {
       toast({
