@@ -6,6 +6,9 @@ export const getAuthProfile = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = getLocalToken();
+      if (!token) {
+        throw new Error("Unauthorized");
+      }
       const { data: response } = await client.get("/auth/profile", {
         headers: {
           Authorization: `Bearer ${token}`,

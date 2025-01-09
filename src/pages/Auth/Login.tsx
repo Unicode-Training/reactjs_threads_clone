@@ -7,16 +7,14 @@ import { FaGoogle } from "react-icons/fa";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-// import { useDispatch } from "react-redux";
-import { client } from "@/utils/client";
 import { saveLocalRefreshToken, saveLocalToken } from "@/utils/auth";
-// import { updateAuthStatus } from "@/stores/slices/authSlice";
-
+import { MESSAGES } from "@/constants/message";
+import { requestLogin } from "@/services/authService";
+const TIMEOUT = 1000;
 export default function Login() {
   const { toast } = useToast();
-  const [isLoading, setLoading] = useState(true);
+  const [isDisabled, setDisabled] = useState(true);
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -30,27 +28,30 @@ export default function Login() {
       username: string;
       password: string;
     };
-
     try {
-      const { data } = await client.post("/auth/login", {
-        email,
-        password,
-      });
+      setDisabled(true);
+      const data = await requestLogin({ email, password });
       saveLocalToken(data.access_token);
       saveLocalRefreshToken(data.refresh_token);
-      // dispatch(updateAuthStatus(true));
-      navigate("/");
+      toast({
+        title: MESSAGES.AUTH.AUTHENTICATED,
+      });
+      setTimeout(() => {
+        navigate("/");
+      }, TIMEOUT);
     } catch {
       toast({
-        title: "Username or password is incorrect",
+        title: MESSAGES.AUTH.UNAUTHENTICATED,
       });
+    } finally {
+      setDisabled(false);
     }
   };
   useEffect(() => {
     trigger(["username", "password"], {
       shouldFocus: true,
     });
-    setLoading(false);
+    setDisabled(false);
   }, []);
 
   return (
@@ -66,7 +67,7 @@ export default function Login() {
           {...register("username", {
             required: {
               value: true,
-              message: "Username is required",
+              message: MESSAGES.AUTH.USERNAME_INVALID,
             },
           })}
         />
@@ -77,7 +78,7 @@ export default function Login() {
           {...register("password", {
             required: {
               value: true,
-              message: "Password is required",
+              message: MESSAGES.AUTH.PASSWORD_INVALID,
             },
           })}
         />
@@ -85,7 +86,7 @@ export default function Login() {
           <Button
             size={null}
             className="w-full py-4 disabled:opacity-100 disabled:text-[gray]"
-            disabled={isLoading || Object.keys(errors).length > 0}
+            disabled={isDisabled || Object.keys(errors).length > 0}
           >
             Log in
           </Button>
