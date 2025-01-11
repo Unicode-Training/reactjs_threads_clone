@@ -22,6 +22,7 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<Inputs>();
   const { toast } = useToast();
   const onSubmit = async (formData: unknown) => {
@@ -49,11 +50,11 @@ export default function Register() {
                 {...register("name", {
                   required: {
                     value: true,
-                    message: MESSAGES.AUTH.USERNAME_INVALID,
+                    message: MESSAGES.AUTH.NAME_INVALID,
                   },
                   minLength: {
                     value: 2,
-                    message: "Name must be at least 2 characters",
+                    message: MESSAGES.AUTH.NAME_TOO_SHORT,
                   },
                 })}
               />
@@ -71,7 +72,11 @@ export default function Register() {
                 {...register("email", {
                   required: {
                     value: true,
-                    message: MESSAGES.AUTH.USERNAME_INVALID,
+                    message: MESSAGES.AUTH.EMAIL_INVALID,
+                  },
+                  pattern: {
+                    value: /^[\w.]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/i,
+                    message: MESSAGES.AUTH.EMAIL_INVALID_FORMAT,
                   },
                 })}
               />
@@ -90,7 +95,11 @@ export default function Register() {
                 {...register("phone", {
                   required: {
                     value: true,
-                    message: MESSAGES.AUTH.USERNAME_INVALID,
+                    message: MESSAGES.AUTH.PHONE_INVALID,
+                  },
+                  pattern: {
+                    value: /^0\d{9}$/i,
+                    message: MESSAGES.AUTH.PHONE_INVALID_FORMAT,
                   },
                 })}
               />
@@ -130,6 +139,10 @@ export default function Register() {
                     value: true,
                     message: MESSAGES.AUTH.PASSWORD_INVALID,
                   },
+                  minLength: {
+                    value: 6,
+                    message: MESSAGES.AUTH.PASSWORD_TOO_SHORT,
+                  },
                 })}
               />
               {errors.password && (
@@ -146,7 +159,12 @@ export default function Register() {
                 {...register("confirm_password", {
                   required: {
                     value: true,
-                    message: MESSAGES.AUTH.PASSWORD_INVALID,
+                    message: MESSAGES.AUTH.CONFIRM_PASSWORD_INVALID,
+                  },
+                  validate: (value: string) => {
+                    return value !== watch("password")
+                      ? MESSAGES.AUTH.CONFIRM_PASSWORD_MISMATCH
+                      : true;
                   },
                 })}
               />
