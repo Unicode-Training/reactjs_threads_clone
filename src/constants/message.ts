@@ -13,5 +13,8 @@ export const MESSAGES = {
     PHONE_INVALID_FORMAT: "Phone is invalid",
     CONFIRM_PASSWORD_INVALID: "Confirm password is required",
     CONFIRM_PASSWORD_MISMATCH: "Confirm password does not match",
+    REGISTER_SUCCESS:
+      "Register successfully. please check your email to activate your account",
+    REGISTER_FAILED: "Register failed",
   },
 };

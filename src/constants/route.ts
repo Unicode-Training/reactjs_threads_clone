@@ -4,4 +4,5 @@ export enum RouteNames {
   HOME = "/",
   SEARCH = "/search",
   ACCOUNT = "/account",
+  ACTIVE_ACCOUNT = "/active-account",
 }

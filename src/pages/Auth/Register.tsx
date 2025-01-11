@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
@@ -8,11 +8,12 @@ import { useForm } from "react-hook-form";
 import { MESSAGES } from "@/constants/message";
 import { RouteNames } from "@/constants/route";
 import { useToast } from "@/hooks/use-toast";
+import { requestRegister } from "@/services/authService";
 type Inputs = {
   name: string;
   email: string;
   password: string;
-  confirm_password: string;
+  password_confirmation: string;
   phone: string;
   username: string;
 };
@@ -25,8 +26,21 @@ export default function Register() {
     watch,
   } = useForm<Inputs>();
   const { toast } = useToast();
-  const onSubmit = async (formData: unknown) => {
-    console.log(formData);
+  const navigate = useNavigate();
+  const onSubmit = async (formData: Inputs) => {
+    try {
+      await requestRegister(formData);
+      toast({
+        title: MESSAGES.AUTH.REGISTER_SUCCESS,
+      });
+      setTimeout(() => {
+        navigate(RouteNames.AUTH_LOGIN);
+      }, 1000);
+    } catch {
+      toast({
+        title: MESSAGES.AUTH.REGISTER_FAILED,
+      });
+    }
   };
   const handleErrors = () => {
     toast({
@@ -156,7 +170,7 @@ export default function Register() {
                 type="password"
                 placeholder="Confirm Password"
                 className=" bg-[rgb(245,245,245)] py-6"
-                {...register("confirm_password", {
+                {...register("password_confirmation", {
                   required: {
                     value: true,
                     message: MESSAGES.AUTH.CONFIRM_PASSWORD_INVALID,
@@ -168,9 +182,9 @@ export default function Register() {
                   },
                 })}
               />
-              {errors.confirm_password && (
+              {errors.password_confirmation && (
                 <span className="text-sm text-[red]">
-                  {errors.confirm_password.message}
+                  {errors.password_confirmation.message}
                 </span>
               )}
             </div>
