@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { saveLocalRefreshToken, saveLocalToken } from "@/utils/auth";
 import { MESSAGES } from "@/constants/message";
 import { requestLogin } from "@/services/authService";
+import { RouteNames } from "@/constants/route";
 const TIMEOUT = 1000;
 export default function Login() {
   const { toast } = useToast();
@@ -112,7 +113,7 @@ export default function Login() {
       </div>
       <div className="flex justify-center mt-[20px] gap-3">
         <span>Have not an account?</span>
-        <Link to="/register" className="text-[#999]">
+        <Link to={RouteNames.AUTH_REGISTER} className="text-[#999]">
           Register now
         </Link>
       </div>
