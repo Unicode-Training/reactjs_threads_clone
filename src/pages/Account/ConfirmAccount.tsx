@@ -7,16 +7,16 @@ import {
   AlertDialogTitle,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import { RouteNames } from "@/constants/route";
 import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { requestResendEmailActive } from "@/services/authService";
+import { useLogout } from "@/hooks/use-logout";
+import { RouteNames } from "@/constants/route";
 export default function ConfirmAccount() {
-  const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const { toast } = useToast();
+  const { logout } = useLogout();
   const handleResendEmail = async () => {
     try {
       setLoading(true);
@@ -43,12 +43,8 @@ export default function ConfirmAccount() {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel
-            onClick={() => {
-              navigate(RouteNames.AUTH_REGISTER);
-            }}
-          >
-            Back to Register
+          <AlertDialogCancel onClick={() => logout(RouteNames.AUTH_LOGIN)}>
+            Logout
           </AlertDialogCancel>
           <AlertDialogAction onClick={handleResendEmail} disabled={isLoading}>
             {isLoading ? "Resending..." : "Resend Email Active"}

@@ -49,3 +49,20 @@ export const requestAcitveAccount = async (token: string) => {
   });
   return data;
 };
+
+export const requestLogout = async () => {
+  const accessToken = getLocalToken();
+  if (!accessToken) {
+    throw new Error("Token not exist");
+  }
+  const data = await client.post(
+    "/auth/logout",
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return data;
+};
