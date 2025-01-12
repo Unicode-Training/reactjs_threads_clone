@@ -12,18 +12,25 @@ import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-
+import { requestResendEmailActive } from "@/services/authService";
 export default function ConfirmAccount() {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const { toast } = useToast();
   const handleResendEmail = async () => {
-    setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setLoading(false);
-    toast({
-      title: "Resend email success",
-    });
+    try {
+      setLoading(true);
+      await requestResendEmailActive();
+      toast({
+        title: "Resend email success",
+      });
+    } catch {
+      toast({
+        title: "Resend email failed",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <AlertDialog open>

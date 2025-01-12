@@ -1,5 +1,6 @@
 import { RouteNames } from "@/constants/route";
 import { client } from "../utils/client";
+import { getLocalToken } from "@/utils/auth";
 export const requestLogin = async (dataLogin: {
   email: string;
   password: string;
@@ -20,5 +21,24 @@ export const requestRegister = async (dataRegister: {
     ...dataRegister,
     url_target: window.location.origin + RouteNames.ACTIVE_ACCOUNT,
   });
+  return data;
+};
+
+export const requestResendEmailActive = async () => {
+  const token = getLocalToken();
+  if (!token) {
+    throw new Error("Token not exist");
+  }
+  const data = await client.post(
+    "/auth/email/send-verification",
+    {
+      url_target: window.location.origin + RouteNames.ACTIVE_ACCOUNT,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return data;
 };

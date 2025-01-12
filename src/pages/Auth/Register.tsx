@@ -8,9 +8,10 @@ import { useForm } from "react-hook-form";
 import { MESSAGES } from "@/constants/message";
 import { RouteNames } from "@/constants/route";
 import { useToast } from "@/hooks/use-toast";
-import { requestRegister } from "@/services/authService";
+import { requestLogin, requestRegister } from "@/services/authService";
 import { useState } from "react";
 import { AxiosError } from "axios";
+import { saveLocalRefreshToken, saveLocalToken } from "@/utils/auth";
 type Inputs = {
   name: string;
   email: string;
@@ -41,6 +42,10 @@ export default function Register() {
     try {
       setDisabled(true);
       await requestRegister(formData);
+      const { email, password } = formData;
+      const data = await requestLogin({ email, password });
+      saveLocalToken(data.access_token);
+      saveLocalRefreshToken(data.refresh_token);
       toast({
         title: MESSAGES.AUTH.REGISTER_SUCCESS,
       });
