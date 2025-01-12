@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getAuthProfile } from "../middlewares/authMiddleware";
 type AuthState = {
   isAuth: boolean;
-  user: null | { name: string };
+  user: null | { name: string; status: boolean };
   isLoading: boolean;
 };
 const initialState: AuthState = {

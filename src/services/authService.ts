@@ -42,3 +42,10 @@ export const requestResendEmailActive = async () => {
   );
   return data;
 };
+
+export const requestAcitveAccount = async (token: string) => {
+  const data = await client.patch(`/confirm-account`, {
+    token,
+  });
+  return data;
+};
