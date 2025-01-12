@@ -5,4 +5,5 @@ export enum RouteNames {
   SEARCH = "/search",
   ACCOUNT = "/account",
   ACTIVE_ACCOUNT = "/active-account",
+  CONFIRM_ACCOUNT = "/account/confirm",
 }

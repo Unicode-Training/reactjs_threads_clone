@@ -16,5 +16,6 @@ export const MESSAGES = {
     REGISTER_SUCCESS:
       "Register successfully. please check your email to activate your account",
     REGISTER_FAILED: "Register failed",
+    REGISTER_VALIDATE_FAILED: "Please fill all the fields",
   },
 };

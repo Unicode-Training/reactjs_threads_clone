@@ -31,6 +31,7 @@ export default function Register() {
     formState: { errors },
     watch,
   } = useForm<Inputs>();
+  const [isDisabled, setDisabled] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   const [serverErrors, setServerErrors] = useState<ServerError>(
@@ -38,12 +39,13 @@ export default function Register() {
   );
   const onSubmit = async (formData: Inputs) => {
     try {
+      setDisabled(true);
       await requestRegister(formData);
       toast({
         title: MESSAGES.AUTH.REGISTER_SUCCESS,
       });
       setTimeout(() => {
-        navigate(RouteNames.AUTH_LOGIN);
+        navigate(RouteNames.CONFIRM_ACCOUNT);
       }, 1000);
     } catch (error) {
       const err = error as AxiosError;
@@ -52,14 +54,15 @@ export default function Register() {
       toast({
         title: MESSAGES.AUTH.REGISTER_FAILED,
       });
+    } finally {
+      setDisabled(false);
     }
   };
   const handleErrors = () => {
     toast({
-      title: "Please fill all the fields",
+      title: MESSAGES.AUTH.REGISTER_VALIDATE_FAILED,
     });
   };
-  console.log(serverErrors);
   return (
     <div>
       <h1 className="text-center text-black font-[700] mb-[20px]">
@@ -235,6 +238,7 @@ export default function Register() {
         <Button
           size={null}
           className="w-full py-4 disabled:opacity-100 disabled:text-[gray]"
+          disabled={isDisabled}
         >
           Register
         </Button>
