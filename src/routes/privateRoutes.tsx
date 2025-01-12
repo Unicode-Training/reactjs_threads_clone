@@ -7,8 +7,8 @@ import { Route } from "react-router-dom";
 
 export const privateRoutes = (
   <>
-    <Route element={<AuthMiddleware />}>
-      <Route element={<MainLayout />}>
+    <Route element={<MainLayout />}>
+      <Route element={<AuthMiddleware />}>
         <Route path={RouteNames.ACCOUNT} element={<Account />} />
         <Route path={RouteNames.CONFIRM_ACCOUNT} element={<ConfirmAccount />} />
       </Route>
