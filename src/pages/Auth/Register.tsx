@@ -9,6 +9,8 @@ import { MESSAGES } from "@/constants/message";
 import { RouteNames } from "@/constants/route";
 import { useToast } from "@/hooks/use-toast";
 import { requestRegister } from "@/services/authService";
+import { useState } from "react";
+import { AxiosError } from "axios";
 type Inputs = {
   name: string;
   email: string;
@@ -16,6 +18,10 @@ type Inputs = {
   password_confirmation: string;
   phone: string;
   username: string;
+};
+
+type ServerError = {
+  [key: string]: string[];
 };
 
 export default function Register() {
@@ -27,6 +33,9 @@ export default function Register() {
   } = useForm<Inputs>();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [serverErrors, setServerErrors] = useState<ServerError>(
+    {} as ServerError
+  );
   const onSubmit = async (formData: Inputs) => {
     try {
       await requestRegister(formData);
@@ -36,7 +45,10 @@ export default function Register() {
       setTimeout(() => {
         navigate(RouteNames.AUTH_LOGIN);
       }, 1000);
-    } catch {
+    } catch (error) {
+      const err = error as AxiosError;
+      const data = err.response?.data as { errors: ServerError };
+      setServerErrors(data.errors);
       toast({
         title: MESSAGES.AUTH.REGISTER_FAILED,
       });
@@ -47,7 +59,7 @@ export default function Register() {
       title: "Please fill all the fields",
     });
   };
-
+  console.log(serverErrors);
   return (
     <div>
       <h1 className="text-center text-black font-[700] mb-[20px]">
@@ -77,6 +89,11 @@ export default function Register() {
                   {errors.name.message}
                 </span>
               )}
+              {serverErrors.name && (
+                <span className="text-sm text-[red]">
+                  {serverErrors.name[0]}
+                </span>
+              )}
             </div>
             <div className="mb-5">
               <Input
@@ -97,6 +114,11 @@ export default function Register() {
               {errors.email && (
                 <span className="text-sm text-[red]">
                   {errors.email.message}
+                </span>
+              )}
+              {serverErrors.email && (
+                <span className="text-sm text-[red]">
+                  {serverErrors.email[0]}
                 </span>
               )}
             </div>
@@ -122,6 +144,11 @@ export default function Register() {
                   {errors.phone.message}
                 </span>
               )}
+              {serverErrors.phone && (
+                <span className="text-sm text-[red]">
+                  {serverErrors.phone[0]}
+                </span>
+              )}
             </div>
           </div>
           <div>
@@ -140,6 +167,11 @@ export default function Register() {
               {errors.username && (
                 <span className="text-sm text-[red]">
                   {errors.username.message}
+                </span>
+              )}
+              {serverErrors.username && (
+                <span className="text-sm text-[red]">
+                  {serverErrors.username[0]}
                 </span>
               )}
             </div>
@@ -164,6 +196,11 @@ export default function Register() {
                   {errors.password.message}
                 </span>
               )}
+              {serverErrors.password && (
+                <span className="text-sm text-[red]">
+                  {serverErrors.password[0]}
+                </span>
+              )}
             </div>
             <div className="mb-5">
               <Input
@@ -185,6 +222,11 @@ export default function Register() {
               {errors.password_confirmation && (
                 <span className="text-sm text-[red]">
                   {errors.password_confirmation.message}
+                </span>
+              )}
+              {serverErrors.password_confirmation && (
+                <span className="text-sm text-[red]">
+                  {serverErrors.password_confirmation[0]}
                 </span>
               )}
             </div>
