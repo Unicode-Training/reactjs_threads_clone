@@ -66,3 +66,11 @@ export const requestLogout = async () => {
   );
   return data;
 };
+
+export const requestForgotPassword = async (email: string) => {
+  const data = await client.post(`/forgot-password`, {
+    email,
+    url_target: window.location.origin + RouteNames.AUH_RESET_PASSWORD,
+  });
+  return data;
+};
