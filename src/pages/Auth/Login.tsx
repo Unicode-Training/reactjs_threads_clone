@@ -11,10 +11,12 @@ import { saveLocalRefreshToken, saveLocalToken } from "@/utils/auth";
 import { MESSAGES } from "@/constants/message";
 import { requestLogin } from "@/services/authService";
 import { RouteNames } from "@/constants/route";
+import ForgotPassword from "./ForgotPassword";
 const TIMEOUT = 1000;
 export default function Login() {
   const { toast } = useToast();
   const [isDisabled, setDisabled] = useState(true);
+  const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -94,9 +96,12 @@ export default function Login() {
         }
       </form>
       <div className="flex justify-center mt-[20px]">
-        <Link to="/forgot-password" className="text-[#999]">
+        <span
+          onClick={() => setOpenForgotPassword(true)}
+          className="text-[#999] cursor-pointer"
+        >
           Forgot password?
-        </Link>
+        </span>
       </div>
       <div className="flex mt-[20px] gap-3 items-center justify-center text-[#999]">
         <Separator className="w-[20px]" />
@@ -117,6 +122,10 @@ export default function Login() {
           Register now
         </Link>
       </div>
+      <ForgotPassword
+        onOpenChange={setOpenForgotPassword}
+        isShow={openForgotPassword}
+      />
     </div>
   );
 }
