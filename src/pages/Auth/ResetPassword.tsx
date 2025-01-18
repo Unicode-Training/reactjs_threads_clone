@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { MESSAGES } from "@/constants/message";
 import { useForm } from "react-hook-form";
 import { requestResetPassword } from "@/services/authService";
+import { AxiosError } from "axios";
 type Inputs = {
   password: string;
   password_confirmation: string;
@@ -30,11 +31,21 @@ export default function ResetPassword() {
       setDisabled(true);
       await requestResetPassword({ ...formData, token });
       toast({
-        title: MESSAGES.AUTH.REGISTER_SUCCESS,
+        title: MESSAGES.AUTH.RESET_PASSWORD_SUCCESS,
       });
-    } catch {
+      setTimeout(() => {
+        navigate(RouteNames.AUTH_LOGIN);
+      }, 1000);
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.status === 401) {
+        const data = err.response?.data as { message: string };
+        return toast({
+          title: data.message,
+        });
+      }
       toast({
-        title: MESSAGES.AUTH.REGISTER_FAILED,
+        title: MESSAGES.AUTH.RESET_PASSWORD_FAILED,
       });
     } finally {
       setDisabled(false);
@@ -42,7 +53,7 @@ export default function ResetPassword() {
   };
   const handleErrors = () => {
     toast({
-      title: MESSAGES.AUTH.REGISTER_VALIDATE_FAILED,
+      title: MESSAGES.AUTH.RESET_PASSWORD_VALIDATE_FAILED,
     });
   };
   useEffect(() => {

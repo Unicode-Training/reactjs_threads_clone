@@ -62,7 +62,7 @@ export default function ForgotPassword({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-4 mb-3">
             <Label htmlFor="email" className="text-left">
               Email
             </Label>
