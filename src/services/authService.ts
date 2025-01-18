@@ -74,3 +74,20 @@ export const requestForgotPassword = async (email: string) => {
   });
   return data;
 };
+
+export const requestResetPassword = async ({
+  password,
+  password_confirmation,
+  token,
+}: {
+  password: string;
+  password_confirmation: string;
+  token: string | null;
+}) => {
+  const data = await client.patch(`/reset-password`, {
+    password,
+    password_confirmation,
+    token,
+  });
+  return data;
+};
