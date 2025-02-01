@@ -1,6 +1,6 @@
 import { RouteNames } from "@/constants/route";
 import { client } from "../utils/client";
-import { getLocalToken } from "@/utils/auth";
+import { getLocalRefreshToken, getLocalToken } from "@/utils/auth";
 export const requestLogin = async (dataLogin: {
   email: string;
   password: string;
@@ -51,20 +51,24 @@ export const requestAcitveAccount = async (token: string) => {
 };
 
 export const requestLogout = async () => {
-  const accessToken = getLocalToken();
-  if (!accessToken) {
-    throw new Error("Token not exist");
-  }
-  const data = await client.post(
-    "/auth/logout",
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+  try {
+    const accessToken = getLocalToken();
+    if (!accessToken) {
+      throw new Error("Token not exist");
     }
-  );
-  return data;
+    const data = await client.post(
+      "/auth/logout",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    return data;
+  } catch {
+    return false;
+  }
 };
 
 export const requestForgotPassword = async (email: string) => {
@@ -88,6 +92,17 @@ export const requestResetPassword = async ({
     password,
     password_confirmation,
     token,
+  });
+  return data;
+};
+
+export const requestRefreshToken = async () => {
+  const refreshToken = getLocalRefreshToken();
+  if (!refreshToken) {
+    throw new Error("Refresh token not exist");
+  }
+  const data = await client.post(`/auth/refresh`, {
+    refresh_token: refreshToken,
   });
   return data;
 };
