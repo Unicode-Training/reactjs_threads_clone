@@ -12,7 +12,10 @@ import { MESSAGES } from "@/constants/message";
 import { requestLogin } from "@/services/authService";
 import { RouteNames } from "@/constants/route";
 import ForgotPassword from "./ForgotPassword";
-import { getGoogleRedirectUrl } from "@/services/socialService";
+import {
+  getGithubRedirectUrl,
+  getGoogleRedirectUrl,
+} from "@/services/socialService";
 const TIMEOUT = 1000;
 export default function Login() {
   const { toast } = useToast();
@@ -53,6 +56,10 @@ export default function Login() {
   };
   const handleLoginGoogle = () => {
     const redirectUrl = getGoogleRedirectUrl();
+    window.location.href = redirectUrl;
+  };
+  const handleLoginGithub = () => {
+    const redirectUrl = getGithubRedirectUrl();
     window.location.href = redirectUrl;
   };
   useEffect(() => {
@@ -121,7 +128,11 @@ export default function Login() {
         >
           <FaGoogle /> Google
         </Button>
-        <Button variant={"outline"} className="w-full">
+        <Button
+          variant={"outline"}
+          className="w-full"
+          onClick={handleLoginGithub}
+        >
           <FaGithub /> Github
         </Button>
       </div>

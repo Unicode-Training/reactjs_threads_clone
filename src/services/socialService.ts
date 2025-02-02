@@ -34,3 +34,27 @@ export const requestLoginSocial = async (
   });
   return data;
 };
+
+export const getGithubRedirectUrl = () => {
+  const params = {
+    client_id: import.meta.env.VITE_GITHUB_CLIENT_ID,
+    redirect_uri: import.meta.env.VITE_GITHUB_REDIRECT_URI,
+    scope: "user",
+    state: "github",
+  };
+  const url = `https://github.com/login/oauth/authorize?${new URLSearchParams(
+    params
+  )}`;
+  return url;
+};
+
+export const getGithubAccessToken = async (code: string) => {
+  const data = await client.post("/auth/github/token", {
+    code,
+    client_id: import.meta.env.VITE_GITHUB_CLIENT_ID,
+    client_secret: import.meta.env.VITE_GITHUB_CLIENT_SECRET,
+    redirect_uri: import.meta.env.VITE_GITHUB_REDIRECT_URI,
+    state: "github",
+  });
+  return data;
+};

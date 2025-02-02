@@ -1,6 +1,7 @@
 import { MESSAGES } from "@/constants/message";
 import { useToast } from "@/hooks/use-toast";
 import {
+  getGithubAccessToken,
   getGoogleAccessToken,
   requestLoginSocial,
 } from "@/services/socialService";
@@ -27,6 +28,22 @@ export default function SocialLogin({
         if (accessToken) {
           //Gọi API đăng nhập
           const data = await requestLoginSocial(accessToken, "google");
+          saveLocalToken(data.access_token);
+          saveLocalRefreshToken(data.refresh_token);
+          toast({
+            title: MESSAGES.AUTH.AUTHENTICATED,
+          });
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
+        }
+      }
+
+      if (code && state === "github") {
+        const response = await getGithubAccessToken(code);
+        const accessToken = response.data.access_token;
+        if (accessToken) {
+          const data = await requestLoginSocial(accessToken, "github");
           saveLocalToken(data.access_token);
           saveLocalRefreshToken(data.refresh_token);
           toast({

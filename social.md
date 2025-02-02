@@ -25,3 +25,28 @@ Body:
 - client_secret: SECRET cua ban
 - redirect_uri: Link Callback
 - grant_type: authorization_code
+
+## Github
+
+1. Lấy Authorization Code
+
+GET https://github.com/login/oauth/authorize
+
+Params:
+
+- client_id: CLIENT ID cua ban
+- redirect_uri: Link Callback
+- scope: user
+- state: github
+
+2. Lấy Access Token
+
+POST https://github.com/login/oauth/access_token
+
+Body:
+
+- client_id: CLIENT ID cua ban
+- client_secret: SECRET cua ban
+- code: Code lấy từ bước trên
+- redirect_uri: Link Callback
+- state: github
