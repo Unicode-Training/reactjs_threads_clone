@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
-import { FaFacebookSquare } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import { MESSAGES } from "@/constants/message";
 import { requestLogin } from "@/services/authService";
 import { RouteNames } from "@/constants/route";
 import ForgotPassword from "./ForgotPassword";
+import { getGoogleRedirectUrl } from "@/services/socialService";
 const TIMEOUT = 1000;
 export default function Login() {
   const { toast } = useToast();
@@ -49,6 +50,10 @@ export default function Login() {
     } finally {
       setDisabled(false);
     }
+  };
+  const handleLoginGoogle = () => {
+    const redirectUrl = getGoogleRedirectUrl();
+    window.location.href = redirectUrl;
   };
   useEffect(() => {
     trigger(["username", "password"], {
@@ -109,11 +114,15 @@ export default function Login() {
         <Separator className="w-[20px]" />
       </div>
       <div className="flex justify-between gap-5 mt-[20px]">
-        <Button variant={"outline"} className="w-full">
-          <FaFacebookSquare /> Facebook
+        <Button
+          variant={"outline"}
+          className="w-full"
+          onClick={handleLoginGoogle}
+        >
+          <FaGoogle /> Google
         </Button>
         <Button variant={"outline"} className="w-full">
-          <FaGoogle /> Google
+          <FaGithub /> Github
         </Button>
       </div>
       <div className="flex justify-center mt-[20px] gap-3">

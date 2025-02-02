@@ -7,4 +7,5 @@ export enum RouteNames {
   ACTIVE_ACCOUNT = "/active-account",
   CONFIRM_ACCOUNT = "/account/confirm",
   AUH_RESET_PASSWORD = "/auth/reset-password",
+  GOOGLE_CALLBACK = "/auth/google/callback",
 }

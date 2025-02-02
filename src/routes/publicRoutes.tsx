@@ -4,6 +4,7 @@ import MainLayout from "@/layouts/MainLayout/MainLayout";
 import GuestMiddleware from "@/middlewares/GuestMiddleware";
 import VerifyMiddleware from "@/middlewares/VerifyMiddleware";
 import ActiveAccount from "@/pages/Account/ActiveAccount";
+import GoogleCallback from "@/pages/Auth/GoogleCallback";
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
 import ResetPassword from "@/pages/Auth/ResetPassword";
@@ -23,6 +24,7 @@ export const publicRoutes = (
     <Route element={<GuestMiddleware />}>
       <Route element={<AuthLayout />}>
         <Route path={RouteNames.AUTH_LOGIN} element={<Login />} />
+        <Route path={RouteNames.GOOGLE_CALLBACK} element={<GoogleCallback />} />
         <Route path={RouteNames.AUTH_REGISTER} element={<Register />} />
         <Route
           path={RouteNames.AUH_RESET_PASSWORD}
