@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { requestResendEmailActive } from "@/services/authService";
 import { useLogout } from "@/hooks/use-logout";
 import { RouteNames } from "@/constants/route";
+import { MESSAGES } from "@/constants/message";
 export default function ConfirmAccount() {
   const [isLoading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -22,11 +23,11 @@ export default function ConfirmAccount() {
       setLoading(true);
       await requestResendEmailActive();
       toast({
-        title: "Resend email success",
+        title: MESSAGES.AUTH.RESEND_ACTIVE_EMAIL_SUCCESS,
       });
     } catch {
       toast({
-        title: "Resend email failed",
+        title: MESSAGES.AUTH.RESEND_ACTIVE_EMAIL_FAILED,
       });
     } finally {
       setLoading(false);

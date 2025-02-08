@@ -10,6 +10,7 @@ import { MESSAGES } from "@/constants/message";
 import { useForm } from "react-hook-form";
 import { requestResetPassword } from "@/services/authService";
 import { AxiosError } from "axios";
+import { CONSTANTS } from "@/constants/const";
 type Inputs = {
   password: string;
   password_confirmation: string;
@@ -35,7 +36,7 @@ export default function ResetPassword() {
       });
       setTimeout(() => {
         navigate(RouteNames.AUTH_LOGIN);
-      }, 1000);
+      }, CONSTANTS.TIMEOUT);
     } catch (error) {
       const err = error as AxiosError;
       if (err.status === 401) {

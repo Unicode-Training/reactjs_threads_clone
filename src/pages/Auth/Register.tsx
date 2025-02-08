@@ -12,6 +12,7 @@ import { requestLogin, requestRegister } from "@/services/authService";
 import { useState } from "react";
 import { AxiosError } from "axios";
 import { saveLocalRefreshToken, saveLocalToken } from "@/utils/auth";
+import { CONSTANTS } from "@/constants/const";
 type Inputs = {
   name: string;
   email: string;
@@ -51,7 +52,7 @@ export default function Register() {
       });
       setTimeout(() => {
         navigate(RouteNames.CONFIRM_ACCOUNT);
-      }, 1000);
+      }, CONSTANTS.TIMEOUT);
     } catch (error) {
       const err = error as AxiosError;
       const data = err.response?.data as { errors: ServerError };

@@ -18,8 +18,11 @@ export const MESSAGES = {
     REGISTER_FAILED: "Register failed",
     REGISTER_VALIDATE_FAILED: "Please fill all the fields",
     ACTIVE_ACCOUNT_FAILED: "Active account failed",
+    FORGOT_PASSWORD_SUCCESS: "Please check your email to reset password",
     RESET_PASSWORD_VALIDATE_FAILED: "Please fill Password and Confirm Password",
     RESET_PASSWORD_SUCCESS: "Reset password successfully",
     RESET_PASSWORD_FAILED: "Reset password failed",
+    RESEND_ACTIVE_EMAIL_SUCCESS: "Resend email success",
+    RESEND_ACTIVE_EMAIL_FAILED: "Resend email failed",
   },
 };

@@ -38,7 +38,7 @@ export default function ForgotPassword({
       setDisabled(true);
       await requestForgotPassword(email);
       toast({
-        title: "Please check your email to reset password",
+        title: MESSAGES.AUTH.FORGOT_PASSWORD_SUCCESS,
       });
     } catch (error) {
       const err = error as AxiosError;

@@ -16,7 +16,7 @@ import {
   getGithubRedirectUrl,
   getGoogleRedirectUrl,
 } from "@/services/socialService";
-const TIMEOUT = 1000;
+import { CONSTANTS } from "@/constants/const";
 export default function Login() {
   const { toast } = useToast();
   const [isDisabled, setDisabled] = useState(true);
@@ -45,7 +45,7 @@ export default function Login() {
       });
       setTimeout(() => {
         navigate("/");
-      }, TIMEOUT);
+      }, CONSTANTS.TIMEOUT);
     } catch {
       toast({
         title: MESSAGES.AUTH.UNAUTHENTICATED,
