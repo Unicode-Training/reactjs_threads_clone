@@ -2,8 +2,12 @@ import { RouteNames } from "@/constants/route";
 import { Link, useLocation } from "react-router-dom";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import { IoSearch } from "react-icons/io5";
+import { BsPin } from "react-icons/bs";
+import { HiMiniBars3BottomLeft } from "react-icons/hi2";
 import { FaRegHeart, FaRegUser, FaHeart, FaUser, FaPlus } from "react-icons/fa";
 import { cn } from "@/lib/utils";
+import Dropdown from "./Dropdown";
+import { useState } from "react";
 const navList = [
   {
     url: RouteNames.HOME,
@@ -37,6 +41,7 @@ const navList = [
 export default function Nav() {
   const { pathname } = useLocation();
   const isActive = (url: string) => pathname === url;
+  const [isOpenDrowndown, setIsOpenDropdown] = useState(false);
   return (
     <div className="flex flex-col w-[76px] items-center justify-between fixed left-0 top-[15px] bottom-[15px]">
       <div>
@@ -61,7 +66,26 @@ export default function Nav() {
           ))}
         </ul>
       </div>
-      <div>Ahihi</div>
+      <div>
+        <ul>
+          <li className="mb-5">
+            <BsPin
+              size={25}
+              fill="rgb(184, 184, 184)"
+              className="cursor-pointer hover:fill-[#333]"
+              onClick={() => setIsOpenDropdown(!isOpenDrowndown)}
+            />
+          </li>
+          <li>
+            <HiMiniBars3BottomLeft
+              size={25}
+              fill="rgb(184, 184, 184)"
+              className="cursor-pointer hover:fill-[#333]"
+            />
+          </li>
+        </ul>
+      </div>
+      <Dropdown isOpen={isOpenDrowndown} onOpenChange={setIsOpenDropdown} />
     </div>
   );
 }
