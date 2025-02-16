@@ -8,6 +8,8 @@ import { FaRegHeart, FaRegUser, FaHeart, FaUser, FaPlus } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import Dropdown from "./Dropdown";
 import { useState } from "react";
+import PinItems from "./dropdown-content/PinItems";
+import SettingItems from "./dropdown-content/SettingItems";
 const navList = [
   {
     url: RouteNames.HOME,
@@ -42,6 +44,8 @@ export default function Nav() {
   const { pathname } = useLocation();
   const isActive = (url: string) => pathname === url;
   const [isOpenDrowndown, setIsOpenDropdown] = useState(false);
+  const [dropdownContent, setDropdownContent] =
+    useState<null | React.ReactNode>(null);
   return (
     <div className="flex flex-col w-[76px] items-center justify-between fixed left-0 top-[15px] bottom-[15px]">
       <div>
@@ -73,7 +77,10 @@ export default function Nav() {
               size={25}
               fill="rgb(184, 184, 184)"
               className="cursor-pointer hover:fill-[#333]"
-              onClick={() => setIsOpenDropdown(!isOpenDrowndown)}
+              onClick={() => {
+                setIsOpenDropdown(true);
+                setDropdownContent(<PinItems />);
+              }}
             />
           </li>
           <li>
@@ -81,11 +88,17 @@ export default function Nav() {
               size={25}
               fill="rgb(184, 184, 184)"
               className="cursor-pointer hover:fill-[#333]"
+              onClick={() => {
+                setIsOpenDropdown(true);
+                setDropdownContent(<SettingItems />);
+              }}
             />
           </li>
         </ul>
       </div>
-      <Dropdown isOpen={isOpenDrowndown} onOpenChange={setIsOpenDropdown} />
+      <Dropdown isOpen={isOpenDrowndown} onOpenChange={setIsOpenDropdown}>
+        {dropdownContent}
+      </Dropdown>
     </div>
   );
 }
